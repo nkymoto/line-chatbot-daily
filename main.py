@@ -109,7 +109,7 @@ def handle_message(event):
                                 index='daily',
                                 body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})
                             hits = result['hits']['total']['value']
-                            result_hits = 'ヒット数 : ' + hits
+                            result_hits = 'ヒット数 : ' + str(hits)
 
                             line_bot_api.reply_message(
                                 event.reply_token,

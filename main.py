@@ -4,6 +4,7 @@ from flask import Flask, request, abort
 from elasticsearch import Elasticsearch
 import os
 import datetime
+import time
 
 # connect to the Elasticsearch cluster
 elastic = Elasticsearch([{'host': '34.97.218.155', 'port': 9200}])
@@ -86,7 +87,7 @@ def handle_message(event):
     except Exception as err:
         print ('Elasticsearch API error:', err)
 
-
+    time.sleep(1)
     result = elastic.search(
              index='daily',
              body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})

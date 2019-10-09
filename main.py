@@ -46,9 +46,29 @@ def handle_message(event):
     if event.reply_token == "00000000000000000000000000000000":
         return
 
+    req_message = event.message.text　#受け取ったメッセージを変数に入れようとしています。
+    yoyaku = req_message.rstrip().split()
+
+    #yoyakuリストに格納した情報をそれぞれの変数に代入しようとしています。
+    yyk_name = yoyaku[0]
+    yyk_date = yoyaku[1]
+    yyk_num = yoyaku[2]
+    yyk_var = yoyaku[3]　　#券種によって値段を算出しようとしています。
+    if yyk_var == "一般":
+        yyk_pay = 3000
+    elif yyk_var == "高校生":
+        yyk_pay = 1500
+    elif yyk_var == "U25":
+        yyk_pay = 2000
+    yyk_payment = yyk_pay * int(yyk_num)
+
+    txt_yoyaku = yyk_name + " 様  ご予約ありがとうございます。\n下記の内容でご予約を承りました。" \
+                 + "お名前： " + yyk_name + "  " + yyk_date \
+                 + " の回\n" + yyk_num + "名様  " + "合計 " + str(yyk_payment) + "円"
+
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text))
+        TextSendMessage(text=txt_yoyaku))
 
 if __name__ == "__main__":
 #    app.run()

@@ -72,13 +72,13 @@ def handle_message(event):
                             event.reply_token, TextSendMessage(text='please input time'))
                         @handler.add(MessageEvent, message=TextMessage)
                         def handle_text_message(event):
-                            time = event.message.text
+                            category_time = event.message.text
 
                             dt_now = datetime.datetime.now()
                             source_to_update = {
                                 "date" : dt_now.strftime('%Y-%m-%d'),
                                 "category" : int(category),
-                                "time" : int(time),
+                                "time" : int(category_time),
                                 "am_pm" : am_pm 
                             }
 

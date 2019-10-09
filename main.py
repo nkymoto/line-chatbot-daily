@@ -1,5 +1,12 @@
+#-*- coding: utf-8 -*-
+
 from flask import Flask, request, abort
+from elasticsearch import Elasticsearch
 import os
+import datetime
+
+# connect to the Elasticsearch cluster
+elastic = Elasticsearch([{'host': '34.97.218.155', 'port': 9200}])
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -47,28 +54,47 @@ def handle_message(event):
         return
 
     req_message = event.message.text
-    yoyaku = req_message.rstrip().split()
+    daily_data = req_message.rstrip().split()
 
-    #yoyakuリストに格納した情報をそれぞれの変数に代入しようとしています。
-    yyk_name = yoyaku[0]
-    yyk_date = yoyaku[1]
-    yyk_num = yoyaku[2]
-    yyk_var = yoyaku[3]
-    if yyk_var == "一般":
-        yyk_pay = 3000
-    elif yyk_var == "高校生":
-        yyk_pay = 1500
-    elif yyk_var == "U25":
-        yyk_pay = 2000
-    yyk_payment = yyk_pay * int(yyk_num)
+    dt_now = datetime.datetime.now()
+    source_to_update = {
+        "date" : dt_now.strftime('YYYY-mm-dd'),
+        "category" : int(daily_data[0]),
+        "time" : int(daily_data[1]),
+        "am_pm" : daily_data[2] 
+    } 
 
-    txt_yoyaku = yyk_name + " 様  ご予約ありがとうございます。\n下記の内容でご予約を承りました。" \
-                 + "お名前： " + yyk_name + "  " + yyk_date \
-                 + " の回\n" + yyk_num + "名様  " + "合計 " + str(yyk_payment) + "円"
+    index_id = dt_now.strftime('YYYYmmdd') + daily_data[0] + daily_data[2]
+    # catch API errors
+    try:
+        # call the Update method
+        response = elastic.index(
+            index='daily',
+            id=index_id,
+            body=source_to_update
+        )
+
+        # print the response to screen
+        print (response, '\n\n')
+        if response['result'] == "updated":
+            print ("result:", response['result'])
+            print ("Update was a success for ID:", response['_id'])
+            print ("New data:", source_to_update)
+        else:
+            print ("result:", response['result'])
+            print ("Response failed:", response['_shards']['failed'])
+    except Exception as err:
+        print ('Elasticsearch API error:', err)
+
+
+    result = elastic.search(
+             index='daily',
+             body={'query': {'match': {'date': dt_now.strftime('YYYY-mm-dd')}}})
+    hits = result['hits']
 
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=txt_yoyaku))
+        TextSendMessage(text=hits))
 
 if __name__ == "__main__":
 #    app.run()

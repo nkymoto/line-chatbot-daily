@@ -55,49 +55,69 @@ def handle_message(event):
         return
 
     req_message = event.message.text
-    daily_data = req_message.rstrip().split()
+    if req_message == 'daily':
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text='daily input start\nplease select a category'))
+        @handler.add(MessageEvent, message=TextMessage)
+        def handle_text_message(event):
+            category = event.message.text
+            if category in ["1","2","3","4"]:
+                line_bot_api.reply_message(
+                    event.reply_token, TextSendMessage(text='please select am or pm）'))
+                @handler.add(MessageEvent, message=TextMessage)
+                def handle_text_message(event):
+                    am_pm = event.message.text
+                    if am_pm in ["am","pm"]:
+                        line_bot_api.reply_message(
+                            event.reply_token, TextSendMessage(text='please input time'))
+                        @handler.add(MessageEvent, message=TextMessage)
+                        def handle_text_message(event):
+                            time = event.message.text
 
-    dt_now = datetime.datetime.now()
-    source_to_update = {
-        "date" : dt_now.strftime('%Y-%m-%d'),
-        "category" : int(daily_data[0]),
-        "time" : int(daily_data[1]),
-        "am_pm" : daily_data[2] 
-    } 
+                            dt_now = datetime.datetime.now()
+                            source_to_update = {
+                                "date" : dt_now.strftime('%Y-%m-%d'),
+                                "category" : int(category),
+                                "time" : int(time),
+                                "am_pm" : am_pm 
+                            }
 
-    index_id = dt_now.strftime('%Y%m%d') + daily_data[0] + daily_data[2]
-    # catch API errors
-    try:
-        # call the Update method
-        response = elastic.index(
-            index='daily',
-            id=index_id,
-            body=source_to_update
-        )
+                            index_id = dt_now.strftime('%Y%m%d') + category + am_pm
+                            # catch API errors
+                            try:
+                                # call the Update method
+                                response = elastic.index(
+                                    index='daily',
+                                    id=index_id,
+                                    body=source_to_update
+                                )
 
-        # print the response to screen
-        print (response, '\n\n')
-        if response['result'] == "updated":
-            print ("result:", response['result'])
-            print ("Update was a success for ID:", response['_id'])
-            print ("New data:", source_to_update)
-        else:
-            print ("result:", response['result'])
-            print ("Response failed:", response['_shards']['failed'])
-    except Exception as err:
-        print ('Elasticsearch API error:', err)
+                                # print the response to screen
+                                print (response, '\n\n')
+                                if response['result'] == "updated":
+                                    print ("result:", response['result'])
+                                    print ("Update was a success for ID:", response['_id'])
+                                    print ("New data:", source_to_update)
+                                else:
+                                    print ("result:", response['result'])
+                                    print ("Response failed:", response['_shards']['failed'])
+                            except Exception as err:
+                                print ('Elasticsearch API error:', err)
 
-    time.sleep(1)
-    result = elastic.search(
-             index='daily',
-             body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})
-    hits = result['hits']['total']['value']
-    print('ヒット数 : %s' % hits)
+                            time.sleep(1)
+                            result = elastic.search(
+                                index='daily',
+                                body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})
+                            hits = result['hits']['total']['value']
+                            result_hits = 'ヒット数 : ' + hits
 
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=hits))
-
+                            line_bot_api.reply_message(
+                                event.reply_token,
+                                TextSendMessage(text=result_hits))
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=req_message))
 if __name__ == "__main__":
 #    app.run()
     port = int(os.getenv("PORT"))

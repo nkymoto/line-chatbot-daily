@@ -46,14 +46,14 @@ def handle_message(event):
     if event.reply_token == "00000000000000000000000000000000":
         return
 
-    req_message = event.message.text　#受け取ったメッセージを変数に入れようとしています。
+    req_message = event.message.text
     yoyaku = req_message.rstrip().split()
 
     #yoyakuリストに格納した情報をそれぞれの変数に代入しようとしています。
     yyk_name = yoyaku[0]
     yyk_date = yoyaku[1]
     yyk_num = yoyaku[2]
-    yyk_var = yoyaku[3]　　#券種によって値段を算出しようとしています。
+    yyk_var = yoyaku[3]
     if yyk_var == "一般":
         yyk_pay = 3000
     elif yyk_var == "高校生":

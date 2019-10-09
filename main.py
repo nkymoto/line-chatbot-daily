@@ -58,13 +58,13 @@ def handle_message(event):
 
     dt_now = datetime.datetime.now()
     source_to_update = {
-        "date" : dt_now.strftime('YYYY-mm-dd'),
+        "date" : dt_now.strftime('%Y-%m-%d'),
         "category" : int(daily_data[0]),
         "time" : int(daily_data[1]),
         "am_pm" : daily_data[2] 
     } 
 
-    index_id = dt_now.strftime('YYYYmmdd') + daily_data[0] + daily_data[2]
+    index_id = dt_now.strftime('%Y%m%d') + daily_data[0] + daily_data[2]
     # catch API errors
     try:
         # call the Update method

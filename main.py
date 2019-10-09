@@ -90,7 +90,7 @@ def handle_message(event):
     result = elastic.search(
              index='daily',
              body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})
-    hits = result['hits']
+    hits = result['hits']['total']
     print('ヒット数 : %s' % hits)
 
     line_bot_api.reply_message(

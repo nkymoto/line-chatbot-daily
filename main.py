@@ -158,9 +158,7 @@ def handle_message(event):
                                 line_bot_api.reply_message(
                                     event.reply_token,
                                     TextSendMessage(text=result_hits))
-                            else:
-                                line_bot_api.reply_message(
-                                    event.reply_token, TextSendMessage(text='please input time'))    
+                                break
     else:
         line_bot_api.reply_message(
             event.reply_token,

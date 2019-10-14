@@ -77,7 +77,7 @@ def handle_message(event):
         )
         line_bot_api.reply_message(
             event.reply_token, button_template)
-    elif if(event.message.text.isdigit()):
+    elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()
         source_to_update = {

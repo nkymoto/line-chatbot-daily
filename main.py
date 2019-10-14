@@ -119,7 +119,7 @@ def handle_message(event):
                             source_to_update = {
                                 "date" : dt_now.strftime('%Y-%m-%d'),
                                 "category" : int(category),
-                                "time" : int(category_time),
+                                "time" : int(float(category_time)),
                                 "am_pm" : am_pm 
                             }
 

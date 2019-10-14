@@ -114,6 +114,7 @@ def handle_message(event):
                         @handler.add(MessageEvent, message=TextMessage)
                         def handle_text_message(event):
                             category_time = event.message.text
+                            print("category_time", category_time)
 
                             dt_now = datetime.datetime.now()
                             source_to_update = {

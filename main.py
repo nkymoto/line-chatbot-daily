@@ -67,20 +67,20 @@ def handle_message(event):
                 thumbnail_image_url="https://www.actioned.com/wp-content/uploads/2018/03/daily-action-list.png",
                 actions=[
                     PostbackTemplateAction(
-                        label: 'reading',
-                        data: '1'
+                        'label': 'reading',
+                        'data': '1'
                     ),
                     PostbackTemplateAction(
-                        label: 'exercise',
-                        data: '2'
+                        'label': 'exercise',
+                        'data': '2'
                     ),
                     PostbackTemplateAction(
-                        label: 'coding',
-                        text: '3'
+                        'label': 'coding',
+                        'data': '3'
                     ),
                     PostbackTemplateAction(
-                        label: 'english',
-                        text: '4'
+                        'label': 'english',
+                        'data': '4'
                     )
                 ]
             )

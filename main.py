@@ -16,7 +16,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, PostbackAction, TextMessage, TextSendMessage, TemplateSendMessage, 
+    MessageEvent, PostbackEvent, PostbackAction, TextMessage, TextSendMessage, TemplateSendMessage, 
     ButtonsTemplate, ConfirmTemplate, MessageTemplateAction
 )
 

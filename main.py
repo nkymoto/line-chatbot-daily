@@ -69,7 +69,7 @@ def handle_message(event):
                         actions=[
                             PostbackAction(
                                 label='AM'
-                                data='am',
+                                text='am',
                             ),
                             MessageAction(
                                 label='PM',

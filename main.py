@@ -81,22 +81,22 @@ def handle_message(event):
             print(event)
             category = event.postback.data
             if category in ["1","2","3","4"]:
-                confirm_template = ConfirmTemplate(
-                    text='please select am or pm?', 
-                    actions=[
-                        MessageTemplateAction(label='AM', text='am'),
-                        MessageTemplateAction(label='PM', text='pm'),
-                    ]
-                )
-                template_message = TemplateSendMessage(
-                    alt_text='Confirm alt text', template=confirm_template)
+                confirm_template = TemplateSendMessage(
+                    alt_text='Confirm alt text',
+                    template = ConfirmTemplate(
+                        text='please select am or pm?',
+                        actions=[
+                            PostbackAction(label='AM', data='am'),
+                            PostbackAction(label='PM', data='pm'),
+                        ]
+                    )
                 line_bot_api.reply_message(
-                    event.reply_token, template_message)
+                    event.reply_token, confirm_template)
 
-                @handler.add(MessageEvent, message=TextMessage)
+                @handler.add(PostbackEvent)
                 def handle_confirm(event):
                     print(event)
-                    am_pm = event.message.text
+                    am_pm = event.postback.data
                     if am_pm in ["am","pm"]:
                         line_bot_api.reply_message(
                             event.reply_token, TextSendMessage(text='please input time'))
@@ -146,7 +146,6 @@ def handle_message(event):
                                 line_bot_api.reply_message(
                                     event.reply_token,
                                     TextSendMessage(text=result_hits))
-                                return
     else:
         line_bot_api.reply_message(
             event.reply_token,

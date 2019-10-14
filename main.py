@@ -57,8 +57,39 @@ def handle_message(event):
 
     req_message = event.message.text
     if req_message == 'daily':
+        button_template = TemplateSendMessage(
+            alt_text='Button alt text',
+            template=ButtonsTemplate(
+                text="please select a category",
+                title="daily input start",
+                image_size="cover",
+                thumbnail_image_url="https://www.actioned.com/wp-content/uploads/2018/03/daily-action-list.png",
+                actions=[
+                    {
+                        "type": "message",
+                        "label": "reading",
+                        "text": "1"
+                    },
+                    {
+                        "type": "message",
+                        "label": "exercise",
+                        "text": "2"
+                    },
+                    {
+                        "type": "message",
+                        "label": "coding",
+                        "text": "3"
+                    },
+                    {
+                        "type": "message",
+                        "label": "english",
+                        "text": "4"
+                    }
+                ]
+            )
+        )
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text='daily input start\nplease select a category'))
+            event.reply_token, button_template)
         @handler.add(MessageEvent, message=TextMessage)
         def handle_text_message(event):
             category = event.message.text

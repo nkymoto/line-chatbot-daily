@@ -91,7 +91,7 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, button_template)
 
-        @handler.add(MessageEvent, message=ButtonMessage)
+        @handler.add(MessageEvent, message=TextMessage)
         def handle_button(event):
             category = event.message.text
             if category in ["1","2","3","4"]:
@@ -107,7 +107,7 @@ def handle_message(event):
                 line_bot_api.reply_message(
                     event.reply_token, template_message)
 
-                @handler.add(MessageEvent, message=ConfirmMessage)
+                @handler.add(MessageEvent, message=TextMessage)
                 def handle_confirm(event):
                     am_pm = event.message.text
                     if am_pm in ["am","pm"]:
@@ -117,48 +117,50 @@ def handle_message(event):
                         @handler.add(MessageEvent, message=TextMessage)
                         def handle_text(event):
                             category_time = event.message.text
-                            print("category_time", category_time)
+                            if(category_time.isdigit()):
+                                dt_now = datetime.datetime.now()
+                                source_to_update = {
+                                    "date" : dt_now.strftime('%Y-%m-%d'),
+                                    "category" : int(category),
+                                    "time" : int(category_time),
+                                    "am_pm" : am_pm 
+                                }
 
-                            dt_now = datetime.datetime.now()
-                            source_to_update = {
-                                "date" : dt_now.strftime('%Y-%m-%d'),
-                                "category" : int(category),
-                                "time" : category_time,
-                                "am_pm" : am_pm 
-                            }
+                                index_id = dt_now.strftime('%Y%m%d') + category + am_pm
+                                # catch API errors
+                                try:
+                                    # call the Update method
+                                    response = elastic.index(
+                                        index='daily',
+                                        id=index_id,
+                                        body=source_to_update
+                                    )
 
-                            index_id = dt_now.strftime('%Y%m%d') + category + am_pm
-                            # catch API errors
-                            try:
-                                # call the Update method
-                                response = elastic.index(
+                                    # print the response to screen
+                                    print (response, '\n\n')
+                                    if response['result'] == "updated":
+                                        print ("result:", response['result'])
+                                        print ("Update was a success for ID:", response['_id'])
+                                        print ("New data:", source_to_update)
+                                    else:
+                                        print ("result:", response['result'])
+                                        print ("Response failed:", response['_shards']['failed'])
+                                except Exception as err:
+                                    print ('Elasticsearch API error:', err)
+
+                                time.sleep(1)
+                                result = elastic.search(
                                     index='daily',
-                                    id=index_id,
-                                    body=source_to_update
-                                )
+                                    body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})
+                                hits = result['hits']['total']['value']
+                                result_hits = 'ヒット数 : ' + str(hits)
 
-                                # print the response to screen
-                                print (response, '\n\n')
-                                if response['result'] == "updated":
-                                    print ("result:", response['result'])
-                                    print ("Update was a success for ID:", response['_id'])
-                                    print ("New data:", source_to_update)
-                                else:
-                                    print ("result:", response['result'])
-                                    print ("Response failed:", response['_shards']['failed'])
-                            except Exception as err:
-                                print ('Elasticsearch API error:', err)
-
-                            time.sleep(1)
-                            result = elastic.search(
-                                index='daily',
-                                body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})
-                            hits = result['hits']['total']['value']
-                            result_hits = 'ヒット数 : ' + str(hits)
-
-                            line_bot_api.reply_message(
-                                event.reply_token,
-                                TextSendMessage(text=result_hits))
+                                line_bot_api.reply_message(
+                                    event.reply_token,
+                                    TextSendMessage(text=result_hits))
+                            else:
+                                line_bot_api.reply_message(
+                                    event.reply_token, TextSendMessage(text='please input time'))    
     else:
         line_bot_api.reply_message(
             event.reply_token,

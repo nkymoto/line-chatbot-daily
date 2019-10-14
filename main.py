@@ -62,23 +62,17 @@ def handle_message(event):
         def handle_text_message(event):
             category = event.message.text
             if category in ["1","2","3","4"]:
-                confirm_ampm_message = TemplateSendMessage(
-                    alt_text='Confirm template',
-                    template=ConfirmTemplate(
-                        text='please select am or pm',
-                        actions=[
-                            PostbackAction(
-                                label='AM',
-                                text='am',
-                            ),
-                            MessageAction(
-                                label='PM',
-                                text='pm')
-                        ]    
-                    )
+                confirm_template = ConfirmTemplate(
+                    text='please select am or pm?', 
+                    actions=[
+                        MessageTemplateAction(label='AM', text='am'),
+                        MessageTemplateAction(label='PM', text='pm'),
+                    ]
                 )
+                template_message = TemplateSendMessage(
+                    alt_text='Confirm alt text', template=confirm_template)
                 line_bot_api.reply_message(
-                    event.reply_token, confirm_ampm_message)
+                    event.reply_token, template_message)
                 @handler.add(MessageEvent, message=TextMessage)
                 def handle_text_message(event):
                     am_pm = event.message.text

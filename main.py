@@ -50,6 +50,8 @@ def callback():
 
     return 'OK'
 
+category = ""
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print(event)
@@ -79,8 +81,9 @@ def handle_message(event):
         @handler.add(PostbackEvent)
         def handle_button(event):
             print(event)
-            category = event.postback.data
-            if category in ["1","2","3","4"]:
+            global category
+            if event.postback.data in ["1","2","3","4"]:
+                category = event.postback.data
                 confirm_template = TemplateSendMessage(
                     alt_text='Confirm alt text',
                     template = ConfirmTemplate(

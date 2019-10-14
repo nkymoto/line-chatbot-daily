@@ -68,7 +68,7 @@ def handle_message(event):
                         text='please select am or pm',
                         actions=[
                             PostbackAction(
-                                label='AM'
+                                label='AM',
                                 text='am',
                             ),
                             MessageAction(

@@ -90,6 +90,7 @@ def handle_message(event):
                             PostbackAction(label='PM', data='pm'),
                         ]
                     )
+                )
                 line_bot_api.reply_message(
                     event.reply_token, confirm_template)
 

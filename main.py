@@ -16,7 +16,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, TemplateSendMessage, 
+    MessageEvent, PostbackAction, TextMessage, TextSendMessage, TemplateSendMessage, 
     ButtonsTemplate, ConfirmTemplate, MessageTemplateAction
 )
 
@@ -66,36 +66,32 @@ def handle_message(event):
                 image_size="cover",
                 thumbnail_image_url="https://www.actioned.com/wp-content/uploads/2018/03/daily-action-list.png",
                 actions=[
-                    {
-                        "type": "message",
-                        "label": "reading",
-                        "text": "1"
-                    },
-                    {
-                        "type": "message",
-                        "label": "exercise",
-                        "text": "2"
-                    },
-                    {
-                        "type": "message",
-                        "label": "coding",
-                        "text": "3"
-                    },
-                    {
-                        "type": "message",
-                        "label": "english",
-                        "text": "4"
-                    }
+                    PostbackTemplateAction(
+                        label: 'reading',
+                        data: '1'
+                    ),
+                    PostbackTemplateAction(
+                        label: 'exercise',
+                        data: '2'
+                    ),
+                    PostbackTemplateAction(
+                        label: 'coding',
+                        text: '3'
+                    ),
+                    PostbackTemplateAction(
+                        label: 'english',
+                        text: '4'
+                    )
                 ]
             )
         )
         line_bot_api.reply_message(
             event.reply_token, button_template)
 
-        @handler.add(MessageEvent, message=TextMessage)
+        @handler.add(PostbackEvent)
         def handle_button(event):
             print(event)
-            category = event.message.text
+            category = event.postback.data
             if category in ["1","2","3","4"]:
                 confirm_template = ConfirmTemplate(
                     text='please select am or pm?', 

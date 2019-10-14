@@ -66,22 +66,10 @@ def handle_message(event):
                 image_size="cover",
                 thumbnail_image_url="https://www.actioned.com/wp-content/uploads/2018/03/daily-action-list.png",
                 actions=[
-                    PostbackTemplateAction(
-                        'label': 'reading',
-                        'data': '1'
-                    ),
-                    PostbackTemplateAction(
-                        'label': 'exercise',
-                        'data': '2'
-                    ),
-                    PostbackTemplateAction(
-                        'label': 'coding',
-                        'data': '3'
-                    ),
-                    PostbackTemplateAction(
-                        'label': 'english',
-                        'data': '4'
-                    )
+                    PostbackAction(label='reading', data='1'),
+                    PostbackAction(label='exercise', data='2'),
+                    PostbackAction(label='coding', data='3'),
+                    PostbackAction(label='english', data='4')
                 ]
             )
         )

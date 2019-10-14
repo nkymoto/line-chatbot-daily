@@ -91,7 +91,7 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, button_template)
         @handler.add(MessageEvent, message=TemplateSendMessage)
-        def handle_text_message(event):
+        def handle_button_message(event):
             category = event.message.text
             if category in ["1","2","3","4"]:
                 confirm_template = ConfirmTemplate(
@@ -106,7 +106,7 @@ def handle_message(event):
                 line_bot_api.reply_message(
                     event.reply_token, template_message)
                 @handler.add(MessageEvent, message=TemplateSendMessage)
-                def handle_text_message(event):
+                def handle_confirm_message(event):
                     am_pm = event.message.text
                     if am_pm in ["am","pm"]:
                         line_bot_api.reply_message(

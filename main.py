@@ -90,8 +90,9 @@ def handle_message(event):
         )
         line_bot_api.reply_message(
             event.reply_token, button_template)
-        @handler.add(MessageEvent, message=TemplateSendMessage)
-        def handle_button_message(event):
+
+        @handler.add(MessageEvent, message=ButtonMessage)
+        def handle_button(event):
             category = event.message.text
             if category in ["1","2","3","4"]:
                 confirm_template = ConfirmTemplate(
@@ -105,14 +106,16 @@ def handle_message(event):
                     alt_text='Confirm alt text', template=confirm_template)
                 line_bot_api.reply_message(
                     event.reply_token, template_message)
-                @handler.add(MessageEvent, message=TemplateSendMessage)
-                def handle_confirm_message(event):
+
+                @handler.add(MessageEvent, message=ConfirmMessage)
+                def handle_confirm(event):
                     am_pm = event.message.text
                     if am_pm in ["am","pm"]:
                         line_bot_api.reply_message(
                             event.reply_token, TextSendMessage(text='please input time'))
+
                         @handler.add(MessageEvent, message=TextMessage)
-                        def handle_text_message(event):
+                        def handle_text(event):
                             category_time = event.message.text
                             print("category_time", category_time)
 

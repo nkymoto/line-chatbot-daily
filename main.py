@@ -52,6 +52,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    print(event)
     if event.reply_token == "00000000000000000000000000000000":
         return
 
@@ -93,6 +94,7 @@ def handle_message(event):
 
         @handler.add(MessageEvent, message=TextMessage)
         def handle_button(event):
+            print(event)
             category = event.message.text
             if category in ["1","2","3","4"]:
                 confirm_template = ConfirmTemplate(
@@ -109,6 +111,7 @@ def handle_message(event):
 
                 @handler.add(MessageEvent, message=TextMessage)
                 def handle_confirm(event):
+                    print(event)
                     am_pm = event.message.text
                     if am_pm in ["am","pm"]:
                         line_bot_api.reply_message(
@@ -116,6 +119,7 @@ def handle_message(event):
 
                         @handler.add(MessageEvent, message=TextMessage)
                         def handle_text(event):
+                            print(event)
                             category_time = event.message.text
                             if(category_time.isdigit()):
                                 dt_now = datetime.datetime.now()

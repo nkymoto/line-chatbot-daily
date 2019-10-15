@@ -122,7 +122,7 @@ def handle_message(event):
     else:
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=req_message))
+            TextSendMessage(text=event.message.text))
 
 @handler.add(PostbackEvent)
 def handle_button(event):

@@ -2,24 +2,24 @@
   'aggs': {
     'by_date': {
       'date_histogram': {
-        'field': 'date',
+        'field': "date",
         'interval': 'day',
         'format': 'yyyy-MM-dd'
       },
       'aggs': {
         'by_am_pm': {
           'terms': {
-            'field': 'am_pm'
+            'field': "am_pm"
           },
           'aggs': {
             'by_category': {
               'terms': {
-                'field': 'category'
+                'field': "category"
               },
               'aggs': {
                 'by_time': {
                   'terms': {
-                    'field': 'time'
+                    'field': "time"
                   }
                 }
               }

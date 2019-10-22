@@ -80,7 +80,7 @@ def handle_message(event):
     elif event.message.text == 'list':
         with open("query.json") as f:
             file_content = f.read().rstrip("\n")
-            print file_content
+            print (file_content, '\n\n')
         f.close()
         result = elastic.search(
             index='daily',

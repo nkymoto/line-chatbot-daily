@@ -85,17 +85,12 @@ def handle_message(event):
               .bucket('by_category', 'terms', field='category')\
               .bucket('by_time', 'terms', field='time')
         response = s.execute()
-        with open("query.json") as f:
-            file_content = f.read()
-        f.close()
-        print (response, '\n\n')
-        #result = elastic.search(
-        #    index='daily',
-        #    body=file_content)
-
+        for aggregations in response:
+            for str_date in aggregations.aggregations.buckets.key_as_string:
+                print(str_date)
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=file_content))        
+            TextSendMessage(text=str_date))        
     elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()

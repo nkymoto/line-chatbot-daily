@@ -80,9 +80,9 @@ def handle_message(event):
             event.reply_token, button_template)
     elif event.message.text == 'list':
         s = Search(using=elastic, index="daily")
-        s.aggs.bucket('by_date', 'date_histogram', field='date', interval='day')
-              .bucket('by_am_pm', 'terms', field='am_pm')
-              .bucket('by_category', 'terms', field='category')
+        s.aggs.bucket('by_date', 'date_histogram', field='date', interval='day')\
+              .bucket('by_am_pm', 'terms', field='am_pm')\
+              .bucket('by_category', 'terms', field='category')\
               .bucket('by_time', 'terms', field='time')
         response = s.execute()
         with open("query.json") as f:

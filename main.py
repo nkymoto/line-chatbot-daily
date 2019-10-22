@@ -84,7 +84,7 @@ def handle_message(event):
         f.close()
         result = elastic.search(
             index='daily',
-            body=file_content
+            body=file_content)
 
         line_bot_api.reply_message(
             event.reply_token,

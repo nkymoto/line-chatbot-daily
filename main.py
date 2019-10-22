@@ -2,7 +2,6 @@
 
 from flask import Flask, request, abort
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search
 import os
 import datetime
 import time

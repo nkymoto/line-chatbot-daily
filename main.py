@@ -2,6 +2,7 @@
 
 from flask import Flask, request, abort
 from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search
 import os
 import datetime
 import time
@@ -79,7 +80,7 @@ def handle_message(event):
             event.reply_token, button_template)
     elif event.message.text == 'list':
         with open("query.json") as f:
-            file_content = f.read().replace('\n', '')
+            file_content = f.read()
         f.close()
         print (file_content, '\n\n')
         result = elastic.search(

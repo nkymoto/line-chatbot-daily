@@ -79,7 +79,7 @@ def handle_message(event):
             event.reply_token, button_template)
     elif event.message.text == 'list':
         with open("query.json") as f:
-            file_content = f.read().rstrip("\n")
+            file_content = f.read().rstrip("\r\n")
             print (file_content, '\n\n')
         f.close()
         result = elastic.search(

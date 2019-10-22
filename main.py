@@ -79,9 +79,9 @@ def handle_message(event):
             event.reply_token, button_template)
     elif event.message.text == 'list':
         with open("query.json") as f:
-            file_content = f.read().rstrip("\r\n")
-            print (file_content, '\n\n')
+            file_content = f.read().replace('\n', '')
         f.close()
+        print (file_content, '\n\n')
         result = elastic.search(
             index='daily',
             body=file_content)

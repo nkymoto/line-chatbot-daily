@@ -79,7 +79,8 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, button_template)
     elif event.message.text == 'list':
-        s = Search(using=elastic, index="daily").filter("term", category="date")
+        s = Search(using=elastic, index="daily")
+        s.aggs.bucket('by_date', 'terms', field='date')
         response = s.execute()
         with open("query.json") as f:
             file_content = f.read()

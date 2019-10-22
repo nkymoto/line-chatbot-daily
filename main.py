@@ -94,7 +94,7 @@ def handle_message(event):
                     for tag4 in tag3.by_time.buckets:
                         line_bot_api.reply_message(
                             event.reply_token,
-                            TextSendMessage(text=tag2.key+tag3.key+tag4.key))
+                            TextSendMessage(text=tag2.key+str(tag3.key)+str(tag4.key)))
     elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()

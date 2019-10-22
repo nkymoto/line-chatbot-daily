@@ -77,6 +77,18 @@ def handle_message(event):
         )
         line_bot_api.reply_message(
             event.reply_token, button_template)
+    elif event.message.text == 'list':
+        with open("query.json") as f:
+            file_content = f.read().rstrip("\n")
+            print file_content
+        f.close()
+        result = elastic.search(
+            index='daily',
+            body=file_content
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=result))        
     elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()

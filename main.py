@@ -2,6 +2,7 @@
 
 from flask import Flask, request, abort
 from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search
 import os
 import datetime
 import time
@@ -78,17 +79,19 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, button_template)
     elif event.message.text == 'list':
+        s = Search(using=elastic, index="daily").filter("term", category="date")
+        response = s.execute()
         with open("query.json") as f:
             file_content = f.read()
         f.close()
         print (file_content, '\n\n')
-        result = elastic.search(
-            index='daily',
-            body=file_content)
+        #result = elastic.search(
+        #    index='daily',
+        #    body=file_content)
 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=result))        
+            TextSendMessage(text=file_content))        
     elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()

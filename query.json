@@ -3,7 +3,7 @@
     'by_date': {
       'date_histogram': {
         'field': 'date',
-        'interval": 'day',
+        'interval': 'day',
         'format': 'yyyy-MM-dd'
       },
       'aggs': {

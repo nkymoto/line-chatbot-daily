@@ -86,10 +86,10 @@ def handle_message(event):
               .bucket('by_time', 'terms', field='time')
         response = s.execute()
         for tag in response.aggregations.by_date.buckets:
-            print(tag.key)
+            print(tag.key_as_string)
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=tag.key))        
+            TextSendMessage(text=tag.key_as_string))        
     elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()

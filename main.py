@@ -114,7 +114,7 @@ def handle_message(event):
             index='daily',
             body={'query': {'match': {'date': dt_now.strftime('%Y-%m-%d')}}})
         hits = result['hits']['total']['value']
-        result_hits = dt_now.strftime('%Y-%m-%d') + 'に登録した\\n習慣数 : ' + str(hits)
+        result_hits = dt_now.strftime('%Y-%m-%d') + 'に登録した\r\n習慣数 : ' + str(hits)
 
         line_bot_api.reply_message(
             event.reply_token,

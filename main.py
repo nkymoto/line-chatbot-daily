@@ -85,7 +85,7 @@ def handle_message(event):
         with open("query.json") as f:
             file_content = f.read()
         f.close()
-        print (file_content, '\n\n')
+        print (response, '\n\n')
         #result = elastic.search(
         #    index='daily',
         #    body=file_content)

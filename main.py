@@ -18,7 +18,7 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent, PostbackEvent, PostbackAction, TextMessage, TextSendMessage, TemplateSendMessage, 
-    ButtonsTemplate, ConfirmTemplate, MessageTemplateAction
+    ButtonsTemplate, ConfirmTemplate, MessageTemplateAction, URIAction
 )
 
 app = Flask(__name__)
@@ -90,9 +90,19 @@ def handle_message(event):
                 for tag3 in tag2.by_category.buckets:
                     for tag4 in tag3.by_time.buckets:
                         print(tag1.key_as_string+tag2.key+str(tag3.key)+str(tag4.key))
+        uri_template = TemplateSendMessage(
+            alt_text='uri alt text',
+            template=ButtonsTemplate(
+                title="Daily List",
+                image_size="cover",
+                thumbnail_image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s",
+                actions=[
+                    URIAction(label='Read more', uri="https://line-python-flask.herokuapp.com")
+                ]
+            )
+        )
         line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=tag1.key_as_string+tag2.key+str(tag3.key)+str(tag4.key)))
+            event.reply_token, uri_template)
     elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()

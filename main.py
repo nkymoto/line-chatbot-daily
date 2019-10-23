@@ -93,6 +93,7 @@ def handle_message(event):
         uri_template = TemplateSendMessage(
             alt_text='uri alt text',
             template=ButtonsTemplate(
+                text="please click Read more",
                 title="Daily List",
                 image_size="cover",
                 thumbnail_image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s",

@@ -1,32 +1,31 @@
 {
-  "aggs": {
-    "by_date": {
-      "date_histogram": {
-        "field": "date",
-        "interval": "day",
-        "format": "yyyy-MM-dd"
-      },
-      "aggs": {
-        "by_am_pm": {
-          "terms": {
-            "field": "am_pm"
-          },
-          "aggs": {
-            "by_category": {
-              "terms": {
-                "field": "category"
-              },
-              "aggs": {
-                "by_time": {
-                  "terms": {
-                    "field": "time"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+	"aggs": {
+		"by_date": {
+			"terms": {
+				"field": "date",
+				"order": {"_key": "desc"}
+			},
+			"aggs": {
+				"by_category": {
+					"terms": {
+						"field": "category"
+					},
+					"aggs": {
+						"by_am_pm": {
+							"terms": {
+								"field": "am_pm"
+							},
+							"aggs": {
+								"by_time": {
+									"terms": {
+										"field": "time"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

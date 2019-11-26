@@ -98,7 +98,7 @@ def handle_message(event):
                 image_size="cover",
                 thumbnail_image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s",
                 actions=[
-                    URIAction(label='Read more', uri="https://line-python-flask.herokuapp.com")
+                    URIAction(label='Read more', uri="https://es-list.nky.uno")
                 ]
             )
         )

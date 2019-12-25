@@ -18,7 +18,7 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent, PostbackEvent, PostbackAction, TextMessage, TextSendMessage, TemplateSendMessage, 
-    ButtonsTemplate, ConfirmTemplate, MessageTemplateAction, URIAction
+    ButtonsTemplate, ConfirmTemplate, MessageTemplateAction, ImageCarouselTemplate, URIAction
 )
 
 app = Flask(__name__)
@@ -79,31 +79,32 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, button_template)
     elif event.message.text == 'list':
-        #s = Search(using=elastic, index="daily")
-        #s.aggs.bucket('by_date', 'date_histogram', field='date', interval='day')\
-        #      .bucket('by_am_pm', 'terms', field='am_pm')\
-        #      .bucket('by_category', 'terms', field='category')\
-        #      .bucket('by_time', 'terms', field='time')
-        #response = s.execute()
-        #for tag1 in response.aggregations.by_date.buckets:
-        #    for tag2 in tag1.by_am_pm.buckets:
-        #        for tag3 in tag2.by_category.buckets:
-        #            for tag4 in tag3.by_time.buckets:
-        #                print(tag1.key_as_string+tag2.key+str(tag3.key)+str(tag4.key))
-        uri_template = TemplateSendMessage(
-            alt_text='uri alt text',
-            template=ButtonsTemplate(
-                text="please click Read more",
-                title="Daily List",
-                image_size="cover",
-                thumbnail_image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s",
-                actions=[
-                    URIAction(label='Read more', uri="https://es-list.nky.uno")
+        image_carousel_template = TemplateSendMessage(
+            alt_text='ImageCarousel template',
+            template=ImageCarouselTemplate(
+                columns=[
+                    ImageCarouselColumn(
+                        image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s',
+                        action=URIAction(label='Read more', uri="https://es-list.nky.uno")
+                    ),
+                    ImageCarouselColumn(
+                        image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s',
+                        action=URIAction(label='Read more', uri="https://es-graph.nky.uno")
+                    )
                 ]
             )
+            #template=ButtonsTemplate(
+            #    text="please click Read more",
+            #    title="Daily List",
+            #    image_size="cover",
+            #    thumbnail_image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s",
+            #    actions=[
+            #        URIAction(label='Read more', uri="https://es-list.nky.uno")
+            #    ]
+            #)
         )
         line_bot_api.reply_message(
-            event.reply_token, uri_template)
+            event.reply_token, image_carousel_template)
     elif (event.message.text.isdigit()):
         category_time = event.message.text
         dt_now = datetime.datetime.now()

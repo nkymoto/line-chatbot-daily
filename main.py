@@ -18,7 +18,7 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent, PostbackEvent, PostbackAction, TextMessage, TextSendMessage, TemplateSendMessage, 
-    ButtonsTemplate, ConfirmTemplate, MessageTemplateAction, ImageCarouselTemplate, URIAction
+    ButtonsTemplate, ConfirmTemplate, MessageTemplateAction, ImageCarouselTemplate, ImageCarouselColumn, URIAction
 )
 
 app = Flask(__name__)

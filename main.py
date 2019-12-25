@@ -88,20 +88,11 @@ def handle_message(event):
                         action=URIAction(label='Read more', uri="https://es-list.nky.uno")
                     ),
                     ImageCarouselColumn(
-                        image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s',
+                        image_url='https://image.freepik.com/free-icon/_318-10306.jpg',
                         action=URIAction(label='Read more', uri="https://es-graph.nky.uno")
                     )
                 ]
             )
-            #template=ButtonsTemplate(
-            #    text="please click Read more",
-            #    title="Daily List",
-            #    image_size="cover",
-            #    thumbnail_image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-yS4YBIo9A6E9uHLsz8VgesteMBKn0CzrPGmpLxlcpJZ23FVu&s",
-            #    actions=[
-            #        URIAction(label='Read more', uri="https://es-list.nky.uno")
-            #    ]
-            #)
         )
         line_bot_api.reply_message(
             event.reply_token, image_carousel_template)
